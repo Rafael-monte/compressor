@@ -1,1 +1,9 @@
-pub const FEED_FILE_PATH: &str = "/home/user/Documentos/rust/compressor/src/input/feed.txt";
+#[warn(dead_code)]
+pub const FEED_FILE_PATH: &str = "";
+
+pub const OUTPUT_COMPRESSED_FILE: &str = "";
+
+pub const DECOMPRESSION_KEY: &str = "";
+
+pub const ILLEGAL_CHARACTERS: [&str; 6] = [".", " ", ",", ":", ";", "\n"];
+
