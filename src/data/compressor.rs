@@ -2,24 +2,28 @@ use std::{collections::HashMap, io::{self, ErrorKind}, fs::{File, self}};
 
 use crate::config;
 
+use super::writer;
+
 struct RepetitionHandler {
-    repetitions: HashMap<String, i32>
+    repetitions: HashMap<String, i32>,
+    words: Vec<String>
 }
 
 
 impl RepetitionHandler {
     pub fn new() -> Self {
         let map: HashMap<String, i32> = HashMap::new();
-        return RepetitionHandler { repetitions: map };
+        return RepetitionHandler { repetitions: map, words: Vec::new() };
     }
 
 
     pub fn read_text(&mut self, text: &str) {
         let normalized_text = text.replace("\n", " ");
-        let words: Vec<&str> = normalized_text.split(' ').collect();
-        for word in words {
-            self.add_word(word);
+        let words: Vec<String> = normalized_text.split(' ').clone().into_iter().map(|el| {String::from(el)}).collect();
+        for word in &words {
+            self.add_word(word.as_str());
         }
+        self.words = words;
     }
 
 
@@ -56,9 +60,10 @@ pub fn read_file_and_get_repetitions() {
     let mut handler = RepetitionHandler::new();
     handler.read_text(opt_text.unwrap().as_str());
     let words_and_markers = handler.drain_repetitions();
-    for (word, marker) in words_and_markers.into_iter() {
+    for (word, marker) in words_and_markers.clone().into_iter() {
         println!("[{}] <=> [{}]", word, marker);
     }
+    writer::write_compressed_file(handler.words, words_and_markers);
 }
 
 fn get_file_as_string() -> Result<String, ErrorKind> {
