@@ -30,14 +30,27 @@ fn write_in_file(compressed_text: &str, file_name: Option<&str>) -> Result<(), E
 
 
 pub fn write_key_file(words_and_markers: &HashMap<String, String>, file_path: Option<&str>) -> Result<(), ErrorKind> {
-    let mut file_content = String::new();
-    for (key, marker) in words_and_markers.clone().iter() {
-        file_content.push_str(format!("[{}] => [{}] \n", key, marker).as_str());
-    }
+    let json = hashmap_to_json(words_and_markers);
+    let json_length: usize = json.len();
+    let file_content = format!("{}{}", json_length, json);
     let result = fs::write(file_path.unwrap_or(config::DECOMPRESSION_KEY), file_content);
     if result.is_err() {
         eprintln!("Ocorreu um erro ao escrever o arquivo de chave!");
         return Err(ErrorKind::InvalidData);
     }
     return Ok(());
+}
+
+
+fn hashmap_to_json(words_and_markers: &HashMap<String, String>) -> String {
+    let mut file_content = String::new();
+    file_content.push('{');
+    for (key, marker) in words_and_markers.clone().iter() {
+        let entry = format!("\"{}\": \"{}\",", key, marker);
+        file_content.push_str(entry.as_str());
+    }
+    // remove last comma
+    file_content.pop();
+    file_content.push('}');
+    return file_content;
 }
