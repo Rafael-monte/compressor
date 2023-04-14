@@ -22,7 +22,8 @@ impl RepetitionHandler {
         for character in config::ILLEGAL_CHARACTERS {
             normalized_text = normalized_text.replace(character, " ");
         }
-        let words: Vec<String> = normalized_text.split(' ').clone().into_iter().map(|el| {String::from(el)}).collect();
+        let mut words: Vec<String> = normalized_text.split(' ').clone().into_iter().map(|el| {String::from(el)}).collect();
+        words.retain(|el|{el != ""});
         for word in &words {
             self.add_word(word.as_str());
         }
@@ -47,6 +48,7 @@ impl RepetitionHandler {
         });
         let mut count: usize = 0;
         for (key, _) in entries {
+            
             words_and_aliases.insert(key.clone(), format!("{}", &count));
             count += 1;
         }
