@@ -1,4 +1,4 @@
-use std::{collections::HashMap, io::{ErrorKind}, fs::{self}};
+use std::{collections::HashMap, io::{ErrorKind}, fs::{self}, path::PathBuf};
 
 use crate::config;
 
@@ -57,8 +57,8 @@ impl RepetitionHandler {
 }
 
 
-pub fn compress_text() {
-    let opt_text = get_file_as_string();
+pub fn compress_text(path: PathBuf) {
+    let opt_text = get_file_as_string(&path);
     if opt_text.is_err() {
         panic!("Ocorreu um erro ao abrir arquivo!");
     }
@@ -77,8 +77,8 @@ pub fn compress_text() {
     }
 }
 
-fn get_file_as_string() -> Result<String, ErrorKind> {
-    let opt_file = fs::read_to_string(config::FEED_FILE_PATH);
+fn get_file_as_string(path: &PathBuf) -> Result<String, ErrorKind> {
+    let opt_file = fs::read_to_string(path);
     if opt_file.is_err() {
         eprintln!("O caminho '{}' não está correto ou não existe!", config::FEED_FILE_PATH);
         return Err(ErrorKind::NotFound);
