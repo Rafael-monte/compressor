@@ -7,6 +7,7 @@ pub fn write_compressed_file(words: Vec<String>, words_and_markers: &HashMap<Str
     for word in words {
         let marker = find_marker_for_word(word.as_str(), &words_and_markers);
         compressed_text.push_str(marker.as_str());
+        compressed_text.push('|');
 
     }
     return write_in_file(compressed_text.as_str(), None);

@@ -42,10 +42,10 @@ impl RepetitionHandler {
 
     pub fn drain_repetitions(&mut self) -> HashMap<String, String> {
         let mut words_and_aliases: HashMap<String, String> = HashMap::new();
-        let mut entries: Vec<(String, i32)> = self.repetitions.clone().into_iter().collect();
-        entries.sort_by(|f_entry, s_entry| {
-            s_entry.1.cmp(&f_entry.1)
-        });
+        let entries: Vec<(String, i32)> = self.repetitions.clone().into_iter().collect();
+        // entries.sort_by(|f_entry, s_entry| {
+        //     s_entry.1.cmp(&f_entry.1)
+        // });
         let mut count: usize = 0;
         for (key, _) in entries {
             
