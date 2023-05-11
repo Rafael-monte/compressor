@@ -10,7 +10,7 @@ pub fn handle_args() {
     match first_arg.as_str() {
         "-c" => {
             if args.len() < 2 {
-                eprintln!("Era esperado um arquivo de entrada como segundo argumento");
+                eprintln!("An input file as 2nd argument was expected.");
                 panic!();
             }
             let path_arg: String = args[1].clone();
@@ -18,7 +18,7 @@ pub fn handle_args() {
         },
         "-d" => {
             if args.len() < 3 {
-                eprintln!("Era esperado um arquivo de entrada como segundo argumento e um arquivo key como terceiro argumento.");
+                eprintln!("An input file as 2nd argumented and an key file as 3rd argument was expected.");
                 panic!();
             }
             let path_target_file: String = args[1].clone();
@@ -40,7 +40,7 @@ fn get_full_path(argument_file_path: &str) -> PathBuf {
     let r_path = format!("{}/{}", current_dir.to_str().unwrap(), path.to_str().unwrap());
     let r_as_path = Path::new(r_path.as_str()).to_path_buf();
     if fs::read(&r_as_path).is_err() {
-        eprintln!("Ocorreu um erro ao verificar existência de arquivo: {}", &r_as_path.display());
+        eprintln!("An error occoured when verify file existence: {}", &r_as_path.display());
         panic!();
     }
     return r_as_path;
@@ -49,7 +49,7 @@ fn get_full_path(argument_file_path: &str) -> PathBuf {
 fn get_current_directory() -> PathBuf {
     let current_dir = std::env::current_dir();
     if current_dir.is_err() {
-        eprintln!("Ocorreu um erro ao buscar diretório atual");
+        eprintln!("An error occoured while search the current directory.");
         panic!();
     }
     return current_dir.unwrap();
@@ -59,7 +59,7 @@ fn get_args() -> Vec<String> {
     let mut args: Vec<String> = std::env::args().collect();
     args = Vec::from(&args.clone()[1..]);
     if args.len() < 1 {
-        eprintln!("Argumentos insuficientes");
+        eprintln!("Not enough arguments");
         panic!();
     }
     return args;
@@ -67,22 +67,24 @@ fn get_args() -> Vec<String> {
 
 fn show_info() {
     println!("");
-    println!("Informações 📦");
+    println!("Infos 📦");
     println!("");
-    println!("Compressor é um aplicativo feito em Rust que permite comprimir arquivos de texto gerando uma chave que pode reverter a compressão.");
+    println!("Compressor is an app Rust-made app that allows compress text files generating a key that can revert the compression");
     println!("");
-    println!("Como usar 🏷️");
+    println!("How to use it? 🏷️");
     println!("-------------------------------------------------------------------------");
     println!("");
-    println!("\tcompressor [OPTION]... [FILE]...");
-    println!("\tDescrição:");
+    println!("\tcompressor [OPTION]... [INPUT_FILE]... [KEY]...");
+    println!("\tDESCRIPTION:");
     println!("\t\t-c");
     println!("\t\t\tCompress the file");
+    println!("\t\t-d");
+    println!("\t\t\tDecompress the file, giving a key as 3rd parameter");
     println!("\t\t-i");
     println!("\t\t\tshow info about project");
     println!("");
     println!("-------------------------------------------------------------------------");
     println!("");
-    println!("O arquivo de saída sempre irão possuir a extensão \".rco\" (Rust Compressed Output) enquanto a chave terá a extensão \".rcok\" (Rust Compressed Output Key)");
+    println!("The output file always has the \".rco\" (Rust Compressed Output) extension, while the key file has the \".rcok\" (Rust Compressed Output Key) extension.");
     println!("");
 }
