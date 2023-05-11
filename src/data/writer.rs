@@ -54,3 +54,19 @@ fn hashmap_to_json(words_and_markers: &HashMap<String, String>) -> String {
     file_content.push('}');
     return file_content;
 }
+
+
+pub fn rewrite_file(compressed_file_content: &str, hash_files: HashMap<String, String>) -> Result<(), ErrorKind> {
+    let file_keys: Vec<&str> = compressed_file_content.split("|").clone().collect();
+    let mut final_content: String = String::new();
+    for key in file_keys {
+        let correspondent = hash_files.get(&String::from(key)).unwrap().clone();
+        final_content.push_str(correspondent.as_str());
+        final_content.push_str(" ");
+    }
+    let file = fs::write(config::DECOMPRESSED_FILE_NAME, final_content.as_str());
+    if file.is_err() {
+        return Err(ErrorKind::Interrupted);
+    }
+    return Ok(file.unwrap());
+}

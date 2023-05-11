@@ -1,4 +1,3 @@
-use data::compressor;
 use handler::args_handler;
 
 mod data;

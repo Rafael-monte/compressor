@@ -1,4 +1,6 @@
-use std::{path::PathBuf, collections::HashMap, ops::Index, fs};
+use std::{path::PathBuf, collections::HashMap, fs};
+
+use super::writer;
 struct KeyFile {
     size: i32,
     pub hash_values: HashMap<String, String>,
@@ -74,9 +76,20 @@ impl Decompressor {
         key_handler.feed(content.unwrap().as_str());
         self.key_file = key_handler;
     }
+
+    pub fn read_compressed_file(&mut self, compressed_file_path: PathBuf) {
+        let content = fs::read_to_string(compressed_file_path);
+        self.content = content.unwrap();
+    }
 }
 
 pub fn decompress_file(compressed_file_path: PathBuf, decompression_key_path: PathBuf) {
     let mut decompressor = Decompressor::new();
     decompressor.read_key(decompression_key_path);
+    decompressor.read_compressed_file(compressed_file_path);
+    let res = writer::rewrite_file(decompressor.content.as_str(), decompressor.key_file.hash_values);
+    if res.is_err() {
+        eprintln!("An error occoured when write the decompressed file: {}", res.unwrap_err());
+        panic!();
+    }
 }
