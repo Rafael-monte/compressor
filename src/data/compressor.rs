@@ -80,7 +80,7 @@ pub fn compress_text(path: PathBuf) {
 fn get_file_as_string(path: &PathBuf) -> Result<String, ErrorKind> {
     let opt_file = fs::read_to_string(path);
     if opt_file.is_err() {
-        eprintln!("O caminho '{}' não está correto ou não existe!", config::FEED_FILE_PATH);
+        eprintln!("O caminho '{}' não está correto ou não existe!", path.display());
         return Err(ErrorKind::NotFound);
     }
     return Ok(opt_file.unwrap())
