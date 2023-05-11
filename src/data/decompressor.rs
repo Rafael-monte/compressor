@@ -87,6 +87,7 @@ pub fn decompress_file(compressed_file_path: PathBuf, decompression_key_path: Pa
     let mut decompressor = Decompressor::new();
     decompressor.read_key(decompression_key_path);
     decompressor.read_compressed_file(compressed_file_path);
+
     let res = writer::rewrite_file(decompressor.content.as_str(), decompressor.key_file.hash_values);
     if res.is_err() {
         eprintln!("An error occoured when write the decompressed file: {}", res.unwrap_err());

@@ -60,6 +60,9 @@ pub fn rewrite_file(compressed_file_content: &str, hash_files: HashMap<String, S
     let file_keys: Vec<&str> = compressed_file_content.split("|").clone().collect();
     let mut final_content: String = String::new();
     for key in file_keys {
+        if key.is_empty() {
+            continue;
+        }
         let correspondent = hash_files.get(&String::from(key)).unwrap().clone();
         final_content.push_str(correspondent.as_str());
         final_content.push_str(" ");
