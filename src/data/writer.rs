@@ -4,11 +4,10 @@ use crate::config;
 
 pub fn write_compressed_file(words: Vec<String>, words_and_markers: &HashMap<String, String>) -> Result<(), ErrorKind> {
     let mut compressed_text = String::new();
-    for word in words {
+    for word in words.clone().into_iter(){
         let marker = find_marker_for_word(word.as_str(), &words_and_markers);
         compressed_text.push_str(marker.as_str());
         compressed_text.push('|');
-
     }
     return write_in_file(compressed_text.as_str(), None);
 }
@@ -64,6 +63,10 @@ pub fn rewrite_file(compressed_file_content: &str, hash_files: HashMap<String, S
             continue;
         }
         let correspondent = hash_files.get(&String::from(key)).unwrap().clone();
+        if &correspondent == config::BREAK_LINE_MARKER {
+            final_content.push_str(config::BREAK_LINE);
+            continue;
+        }
         final_content.push_str(correspondent.as_str());
         final_content.push_str(" ");
     }
