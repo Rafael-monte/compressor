@@ -6,7 +6,6 @@ struct KeyFile {
     pub hash_values: HashMap<String, String>,
 }
 struct Decompressor {
-    pub size: i32,
     pub content: String,
     pub key_file: KeyFile
 }
@@ -62,9 +61,7 @@ impl KeyFile {
 
 impl Decompressor {
     pub fn new() -> Self {
-        
         return Self {
-            size: 0,
             content: String::new(),
             key_file: KeyFile::new(),
         }

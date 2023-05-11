@@ -6,7 +6,7 @@ use super::writer;
 
 struct RepetitionHandler {
     repetitions: HashMap<String, i32>,
-    words: Vec<String>
+    words: Vec<String>,
 }
 
 
@@ -16,13 +16,9 @@ impl RepetitionHandler {
         return RepetitionHandler { repetitions: map, words: Vec::new() };
     }
 
-
     pub fn read_text(&mut self, text: &str) {
-        let mut normalized_text = String::from(text);
-        for character in config::ILLEGAL_CHARACTERS {
-            normalized_text = normalized_text.replace(character, " ");
-        }
-        let mut words: Vec<String> = normalized_text.split(' ').clone().into_iter().map(|el| {String::from(el)}).collect();
+        let file_text = String::from(text);
+        let mut words: Vec<String> = self.normalize_text(file_text.as_str());
         words.retain(|el|{el != ""});
         for word in &words {
             self.add_word(word.as_str());
@@ -30,6 +26,22 @@ impl RepetitionHandler {
         self.words = words;
     }
 
+    fn normalize_text(&mut self, plain_text: &str) -> Vec<String> {
+        let mut normalized_text = Vec::<String>::new();
+        for el in plain_text.split(config::WHITESPACE).clone().into_iter(){
+            if el.contains(config::BREAK_LINE) {
+                let lb_idx: usize = el.find(config::BREAK_LINE).unwrap();
+                let l_word: &str = &el[..lb_idx];
+                let r_word: &str = &el[lb_idx+1..];
+                normalized_text.push(String::from(l_word));
+                normalized_text.push(config::BREAK_LINE_MARKER.to_owned());
+                normalized_text.push(String::from(r_word));
+                continue;
+            }
+            normalized_text.push(String::from(el));
+        }
+        return normalized_text;
+    }
 
     fn add_word(&mut self, word: &str) {
         if !self.repetitions.contains_key(&String::from(word)) {
@@ -43,9 +55,6 @@ impl RepetitionHandler {
     pub fn drain_repetitions(&mut self) -> HashMap<String, String> {
         let mut words_and_aliases: HashMap<String, String> = HashMap::new();
         let entries: Vec<(String, i32)> = self.repetitions.clone().into_iter().collect();
-        // entries.sort_by(|f_entry, s_entry| {
-        //     s_entry.1.cmp(&f_entry.1)
-        // });
         let mut count: usize = 0;
         for (key, _) in entries {
             
@@ -65,6 +74,7 @@ pub fn compress_text(path: PathBuf) {
     let mut handler = RepetitionHandler::new();
     handler.read_text(opt_text.unwrap().as_str());
     let words_and_markers = handler.drain_repetitions();
+
     let compression_result = writer::write_compressed_file(handler.words, &words_and_markers);
     if compression_result.is_err() {
         panic!("Ocorreu um erro ao comprimir arquivo");
