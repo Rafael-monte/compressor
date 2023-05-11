@@ -42,12 +42,11 @@ pub fn write_key_file(words_and_markers: &HashMap<String, String>, file_path: Op
     return Ok(());
 }
 
-
 fn hashmap_to_json(words_and_markers: &HashMap<String, String>) -> String {
     let mut file_content = String::new();
     file_content.push('{');
     for (key, marker) in words_and_markers.clone().iter() {
-        let entry = format!("\"{}\": \"{}\",", key, marker);
+        let entry = format!("\"{}\": \"{}\", ", marker, key);
         file_content.push_str(entry.as_str());
     }
     // remove last comma
