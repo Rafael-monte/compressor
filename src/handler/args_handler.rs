@@ -75,12 +75,12 @@ fn show_info() {
     println!("-------------------------------------------------------------------------");
     println!("");
     println!("\tcompressor [OPTION]... [INPUT_FILE]... [KEY]...");
-    println!("\tDESCRIPTION:");
-    println!("\t\t-c");
+    println!("\t\x1B[1m{}\x1B[0m", "DESCRIPTION:");
+    println!("\t\t\x1B[1m{}\x1B[0m", "-c");
     println!("\t\t\tCompress the file");
-    println!("\t\t-d");
+    println!("\t\t\x1B[1m{}\x1B[0m","-d");
     println!("\t\t\tDecompress the file, giving a key as 3rd parameter");
-    println!("\t\t-i");
+    println!("\t\t\x1B[1m{}\x1B[0m", "-i");
     println!("\t\t\tshow info about project");
     println!("");
     println!("-------------------------------------------------------------------------");

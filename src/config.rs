@@ -5,7 +5,7 @@ pub const DECOMPRESSION_KEY: &str = "decomp-key.rcok";
 
 pub const DECOMPRESSED_FILE_NAME: &str = "decompressed.txt";
 
-pub const ILLEGAL_CHARACTERS: [&str; 2] = [" ", "\t"];
+// pub const ILLEGAL_CHARACTERS: [&str; 2] = [" ", "\t"];
 
 pub const BREAK_LINE_MARKER:&str=":?&br&?:";
 
