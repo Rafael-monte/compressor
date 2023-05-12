@@ -13,3 +13,10 @@ pub const BREAK_LINE:&str="\n";
 
 pub const WHITESPACE:&str=" ";
 
+pub const FILE_EXTENSION_SEPARATOR:char='.';
+
+pub const COMPRESSED_KEY_FILE_EXTENSION:&str=".rcok";
+
+pub const COMPRESSED_FILE_EXTENSION:&str=".rco";
+
+pub const TEXT_FILE_EXTENSION:&str=".txt";
