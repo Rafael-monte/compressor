@@ -29,3 +29,19 @@
 chmod +x compressor
 ```
 3. And it's done! Just note that the `compressed.rco` and `decomp-key.rcok` files are generated in the same directory that the command was run 
+
+
+## Some comparitions
+
+Considering the following files:
+- light-lorem.txt, a small text file
+- medium-lorem.txt, a medium-size text file
+- heavy-lorem.txt, a large size text file
+
+There are some results after compression and revertion:
+
+| File Name         | Original Size | Number of Paragraphs | Compressed Size | Key File Size | After Decompression |
+|-------------------|---------------|----------------------|-----------------|---------------|---------------------|
+| light-lorem.txt   | 446B          | 5                    | 200B            | 1012B         | 447B                |
+| medium-lorem.txt  | 77Kb          | 100                  | 44Kb            | 8.7Kb         | 77Kb               |
+| heavy-lorem.txt   | 746Kb         | 1000                 | 425Kb           | 8.8Kb         | 747Kb              |
