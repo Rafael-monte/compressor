@@ -19,7 +19,7 @@ impl RepetitionHandler {
     pub fn read_text(&mut self, text: &str) {
         let file_text = String::from(text);
         let mut words: Vec<String> = self.normalize_text(file_text.as_str());
-        words.retain(|el|{el != ""});
+        words.retain(|el|{el != config::EMPTY_STRING});
         for word in &words {
             self.add_word(word.as_str());
         }

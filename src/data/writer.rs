@@ -7,7 +7,7 @@ pub fn write_compressed_file(words: Vec<String>, words_and_markers: &HashMap<Str
     for word in words.clone().into_iter(){
         let marker = find_marker_for_word(word.as_str(), &words_and_markers);
         compressed_text.push_str(marker.as_str());
-        compressed_text.push('|');
+        compressed_text.push(config::COMPRESSED_FILE_SEPARATOR);
     }
     return write_in_file(compressed_text.as_str(), None);
 }
@@ -43,14 +43,16 @@ pub fn write_key_file(words_and_markers: &HashMap<String, String>, file_path: Op
 
 fn hashmap_to_json(words_and_markers: &HashMap<String, String>) -> String {
     let mut file_content = String::new();
-    file_content.push('{');
+    file_content.push(config::JSON_START);
     for (key, marker) in words_and_markers.clone().iter() {
         let entry = format!("\"{}\": \"{}\", ", marker, key);
         file_content.push_str(entry.as_str());
     }
+    // remove last space
+    file_content.pop();
     // remove last comma
     file_content.pop();
-    file_content.push('}');
+    file_content.push(config::JSON_END);
     return file_content;
 }
 
@@ -68,7 +70,7 @@ pub fn rewrite_file(compressed_file_content: &str, hash_files: HashMap<String, S
             continue;
         }
         final_content.push_str(correspondent.as_str());
-        final_content.push_str(" ");
+        final_content.push_str(config::WHITESPACE);
     }
     let file = fs::write(config::DECOMPRESSED_FILE_NAME, final_content.as_str());
     if file.is_err() {
