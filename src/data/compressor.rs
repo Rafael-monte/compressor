@@ -30,17 +30,33 @@ impl RepetitionHandler {
         let mut normalized_text = Vec::<String>::new();
         for el in plain_text.split(config::WHITESPACE).clone().into_iter(){
             if el.contains(config::BREAK_LINE) {
-                let lb_idx: usize = el.find(config::BREAK_LINE).unwrap();
-                let l_word: &str = &el[..lb_idx];
-                let r_word: &str = &el[lb_idx+1..];
-                normalized_text.push(String::from(l_word));
-                normalized_text.push(config::BREAK_LINE_MARKER.to_owned());
-                normalized_text.push(String::from(r_word));
+                self.split_breakline_from_word(el, &mut normalized_text);
                 continue;
             }
             normalized_text.push(String::from(el));
         }
         return normalized_text;
+    }
+
+
+    fn split_breakline_from_word(&mut self, word: &str, normalized_text: &mut Vec<String>) {
+        let lb_idx: usize = word.find(config::BREAK_LINE).unwrap();
+        let l_word: &str = &word[..lb_idx];
+        let r_word: &str = &word[lb_idx+1..];
+        if l_word.trim() == config::EMPTY_STRING {
+            normalized_text.push(config::BREAK_LINE_MARKER.to_owned());
+        }
+        //Complex-case (recursive)
+        if r_word.contains(config::BREAK_LINE) {
+            println!("Called recursive function");
+            self.split_breakline_from_word(&r_word, normalized_text);
+        } 
+        //Simple Case (O(1))
+        else {
+            normalized_text.push(String::from(l_word));
+            normalized_text.push(config::BREAK_LINE_MARKER.to_owned());
+            normalized_text.push(String::from(r_word));
+        }
     }
 
     fn add_word(&mut self, word: &str) {
