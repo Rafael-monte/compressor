@@ -84,7 +84,7 @@ impl RepetitionHandler {
 pub fn compress_text(path: PathBuf) {
     let opt_text = get_file_as_string(&path);
     if opt_text.is_err() {
-        panic!("Ocorreu um erro ao abrir arquivo!");
+        panic!("An error occoured when open file");
     }
     let mut handler = RepetitionHandler::new();
     handler.read_text(opt_text.unwrap().as_str());
@@ -92,20 +92,20 @@ pub fn compress_text(path: PathBuf) {
 
     let compression_result = writer::write_compressed_file(handler.words, &words_and_markers);
     if compression_result.is_err() {
-        panic!("Ocorreu um erro ao comprimir arquivo");
+        panic!("An error occoured when compress the file");
     }
 
     let key_creation_result = writer::write_key_file(&words_and_markers, None);
 
     if key_creation_result.is_err() {
-        panic!("Ocorreu um erro ao gerar arquivo de chaves");
+        panic!("An error occoured when generate key file");
     }
 }
 
 fn get_file_as_string(path: &PathBuf) -> Result<String, ErrorKind> {
     let opt_file = fs::read_to_string(path);
     if opt_file.is_err() {
-        eprintln!("O caminho '{}' não está correto ou não existe!", path.display());
+        eprintln!("The path '{}' isnt right or dont exist", path.display());
         return Err(ErrorKind::NotFound);
     }
     return Ok(opt_file.unwrap())
