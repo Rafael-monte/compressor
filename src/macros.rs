@@ -24,3 +24,10 @@ macro_rules! show_info {
         println!("");
     };
 }
+
+#[macro_export]
+macro_rules! deadly_err {
+    ($err_message:expr) => {
+        panic!("{}", $err_message);
+    };
+}

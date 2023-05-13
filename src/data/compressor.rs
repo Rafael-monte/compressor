@@ -1,6 +1,6 @@
-use std::{collections::HashMap, io::{ErrorKind}, fs::{self}, path::PathBuf};
+use std::{collections::HashMap, fs::{self}, path::PathBuf};
 
-use crate::config;
+use crate::{config, deadly_err};
 
 use super::writer;
 
@@ -83,30 +83,26 @@ impl RepetitionHandler {
 
 pub fn compress_text(path: PathBuf) {
     let opt_text = get_file_as_string(&path);
-    if opt_text.is_err() {
-        panic!("An error occoured when open file");
-    }
     let mut handler = RepetitionHandler::new();
-    handler.read_text(opt_text.unwrap().as_str());
+    handler.read_text(opt_text.as_str());
     let words_and_markers = handler.drain_repetitions();
 
     let compression_result = writer::write_compressed_file(handler.words, &words_and_markers);
     if compression_result.is_err() {
-        panic!("An error occoured when compress the file");
+        deadly_err!("An error occoured when compress the file");
     }
 
     let key_creation_result = writer::write_key_file(&words_and_markers, None);
 
     if key_creation_result.is_err() {
-        panic!("An error occoured when generate key file");
+        deadly_err!("An error occoured when generate key file");
     }
 }
 
-fn get_file_as_string(path: &PathBuf) -> Result<String, ErrorKind> {
+fn get_file_as_string(path: &PathBuf) -> String {
     let opt_file = fs::read_to_string(path);
     if opt_file.is_err() {
-        eprintln!("The path '{}' isnt right or dont exist", path.display());
-        return Err(ErrorKind::NotFound);
+        deadly_err!(format!("The path '{}' isnt right or dont exist", path.display()));
     }
-    return Ok(opt_file.unwrap())
+    return opt_file.unwrap();
 }

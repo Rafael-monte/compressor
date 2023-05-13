@@ -1,5 +1,7 @@
 use std::{path::PathBuf, collections::HashMap, fs};
 
+use crate::deadly_err;
+
 use super::writer;
 struct KeyFile {
     size: i32,
@@ -87,7 +89,6 @@ pub fn decompress_file(compressed_file_path: PathBuf, decompression_key_path: Pa
 
     let res = writer::rewrite_file(decompressor.content.as_str(), decompressor.key_file.hash_values);
     if res.is_err() {
-        eprintln!("An error occoured when write the decompressed file: {}", res.unwrap_err());
-        panic!();
+        deadly_err!(format!("An error occoured when write the decompressed file: {}", res.unwrap_err()));
     }
 }

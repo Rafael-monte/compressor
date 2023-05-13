@@ -22,7 +22,6 @@ fn write_in_file(compressed_text: &str, file_name: Option<&str>) -> Result<(), E
     let output_file = fs::write(file_name.unwrap_or(config::OUTPUT_COMPRESSED_FILE), compressed_text);
 
     if output_file.is_err() {
-        eprintln!("An error occoured when create the compressed text file");
         return Err(ErrorKind::InvalidData);
     }    
     return Ok(());
@@ -35,7 +34,6 @@ pub fn write_key_file(words_and_markers: &HashMap<String, String>, file_path: Op
     let file_content = format!("{}{}", json_length, json);
     let result = fs::write(file_path.unwrap_or(config::DECOMPRESSION_KEY), file_content);
     if result.is_err() {
-        eprintln!("An error occoured when write the key file");
         return Err(ErrorKind::InvalidData);
     }
     return Ok(());
