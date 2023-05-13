@@ -48,6 +48,7 @@ impl RepetitionHandler {
         }
         //Complex-case (recursive)
         if r_word.contains(config::BREAK_LINE) {
+            normalized_text.push(String::from(l_word));
             self.split_breakline_from_word(&r_word, normalized_text);
         } 
         //Simple Case (O(1))
