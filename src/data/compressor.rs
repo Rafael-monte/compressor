@@ -48,7 +48,6 @@ impl RepetitionHandler {
         }
         //Complex-case (recursive)
         if r_word.contains(config::BREAK_LINE) {
-            println!("Called recursive function");
             self.split_breakline_from_word(&r_word, normalized_text);
         } 
         //Simple Case (O(1))
