@@ -58,7 +58,7 @@ fn hashmap_to_json(words_and_markers: &HashMap<String, String>) -> String {
 pub fn rewrite_file(compressed_file_content: &str, hash_files: HashMap<String, String>) -> Result<(), ErrorKind> {
     let file_keys: Vec<&str> = compressed_file_content.split("|").clone().collect();
     let mut final_content: String = String::new();
-    for key in file_keys {
+    for (idx, key) in file_keys.clone().into_iter().enumerate() {
         if key.is_empty() {
             continue;
         }
@@ -68,7 +68,9 @@ pub fn rewrite_file(compressed_file_content: &str, hash_files: HashMap<String, S
             continue;
         }
         final_content.push_str(correspondent.as_str());
-        final_content.push_str(config::WHITESPACE);
+        if idx+1 < file_keys.len() && file_keys[idx + 1] != config::BREAK_LINE {
+            final_content.push_str(config::WHITESPACE);
+        }
     }
     let file = fs::write(config::DECOMPRESSED_FILE_NAME, final_content.as_str());
     if file.is_err() {
