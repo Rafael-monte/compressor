@@ -12,9 +12,14 @@
 
 ## Flags
 ```bash
--i -- Show info about project
--c [input_file] -- Compress the file
--d [compressed_file] [compression_key] -- Reverts compression
+# Show info about project
+-i
+
+# Compress the file
+-c [input_file]
+
+# Reverts compression
+-d [compressed_file] [compression_key]
 ```
 
 ## How to use it?
