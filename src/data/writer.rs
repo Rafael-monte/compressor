@@ -46,12 +46,17 @@ fn hashmap_to_json(words_and_markers: &HashMap<String, String>) -> String {
         let entry = format!("\"{}\": \"{}\", ", marker, key);
         file_content.push_str(entry.as_str());
     }
+    format_eof(&mut file_content);
+    return file_content;
+}
+
+
+fn format_eof(file_content: &mut String) {
     // remove last space
     file_content.pop();
     // remove last comma
     file_content.pop();
     file_content.push(config::JSON_END);
-    return file_content;
 }
 
 

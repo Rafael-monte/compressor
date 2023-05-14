@@ -27,3 +27,6 @@ pub const JSON_END:char='}';
 
 pub const COMPRESSED_FILE_SEPARATOR:char='|';
 
+pub const JSON_KEY_SEPARATOR:&str=", ";
+
+pub const DOUBLE_QUOTE:char='\"';
