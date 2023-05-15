@@ -1,6 +1,6 @@
 use std::{path::PathBuf, collections::HashMap, fs};
 
-use crate::deadly_err;
+use crate::{deadly_err, config};
 
 use super::writer;
 struct KeyFile {
@@ -26,16 +26,19 @@ impl KeyFile {
         let file_size_as_str: &str = &content[..json_start];
         self.size = file_size_as_str.parse::<i32>().unwrap();
         content = &content[json_start..];
-        let replaced: String = content.replace("{", "").replace("}", "").replace(", ", "\n");
+        let replaced: String = content
+            .replace(config::JSON_START, config::EMPTY_STRING)
+            .replace(config::JSON_END, config::EMPTY_STRING)
+            .replace(config::JSON_KEY_SEPARATOR, config::BREAK_LINE);
         return String::from(replaced);
     }
 
 
     fn extract_content_from_line(&mut self, line: &str) -> (String, String) {
-        let l_value_idxs: (usize, usize) = (self.char_at_position(0, &'\"', line), self.char_at_position(1, &'\"', line));
-        let r_value_idxs: (usize, usize) = (self.char_at_position(2, &'\"', line), self.char_at_position(3, &'\"', line));
-        let l_value: String = String::from(&line[l_value_idxs.0 .. (l_value_idxs.1 + 1)]).replace("\"", "");
-        let r_value: String = String::from(&line[r_value_idxs.0 .. (r_value_idxs.1 + 1)]).replace("\"", "");
+        let l_value_idxs: (usize, usize) = (self.char_at_position(0, &config::DOUBLE_QUOTE, line), self.char_at_position(1, &config::DOUBLE_QUOTE, line));
+        let r_value_idxs: (usize, usize) = (self.char_at_position(2, &config::DOUBLE_QUOTE, line), self.char_at_position(3, &config::DOUBLE_QUOTE, line));
+        let l_value: String = String::from(&line[l_value_idxs.0 .. (l_value_idxs.1 + 1)]).replace(config::DOUBLE_QUOTE, config::EMPTY_STRING);
+        let r_value: String = String::from(&line[r_value_idxs.0 .. (r_value_idxs.1 + 1)]).replace(config::DOUBLE_QUOTE, config::EMPTY_STRING);
         return (l_value, r_value);
     }
 
