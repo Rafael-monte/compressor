@@ -73,11 +73,15 @@ pub fn rewrite_file(compressed_file_content: &str, hash_files: HashMap<String, S
             continue;
         }
         final_content.push_str(correspondent.as_str());
-        if idx+1 < file_keys.len() && file_keys[idx + 1] != config::BREAK_LINE {
-            final_content.push_str(config::WHITESPACE);
+        let next_element = hash_files.get(file_keys[idx + 1]);
+
+        if next_element.is_some() && next_element.unwrap() == config::BREAK_LINE_MARKER || next_element.is_none() {
+            continue;
         }
+
+        final_content.push_str(config::WHITESPACE);
     }
-    let file = fs::write(config::DECOMPRESSED_FILE_NAME, final_content.as_str());
+    let file = fs::write(config::DECOMPRESSED_FILE_NAME, &final_content);
     if file.is_err() {
         return Err(ErrorKind::Interrupted);
     }
