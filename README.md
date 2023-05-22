@@ -23,7 +23,7 @@
 ```
 
 ## How to use it?
-1. Go to the [release page](https://github.com/Rafael-monte/compressor/releases/tag/v.0.1.0h) and install the binary file;
+1. Go to the [release page](https://github.com/Rafael-monte/compressor/releases/tag/v.0.1.1h) and install the binary file;
 2. Run the following command in your shell:
 ```bash
 chmod +x compressor
